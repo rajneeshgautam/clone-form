@@ -5,8 +5,8 @@
 Demo
 -----
 
-* [Advance Form Demo](http://plugin.examruler.com).
-* [Basic Form Demo](http://plugin.examruler.com/basic-form.html).
+* [Advance Form Demo](https://rajneeshgautam.github.io/jquery-dynamicform).
+* [Basic Form Demo](https://rajneeshgautam.github.io/jquery-dynamicform/basic-form.html).
 
 
 
