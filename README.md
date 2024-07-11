@@ -189,15 +189,19 @@ Demo
             console.info(':: Initialize Plugin ::');
         },
         beforeRender: function () {
+            var index = this.index; // generated element index to manupulate the data
             console.info(':: Before rendered callback called');
         },
         afterRender: function () {
+            var index = this.index; // generated element index to manupulate the data
             console.info(':: After rendered callback called');
         },
         afterRemove: function () {
+            var index = this.index; // generated element index to manupulate the data
             console.warn(':: After remove callback called');
         },
         beforeRemove: function () {
+            var index = this.index; // generated element index to manupulate the data
             console.warn(':: Before remove callback called');
         }
     });
