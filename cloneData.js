@@ -93,7 +93,7 @@
 
             // stop append HTML if maximum limit exceed
             if (settings.maxLimit != 0 && item_exists >= settings.maxLimit){
-                alert("More than "+ settings.maxLimit +" degrees can\'t be added in one form. Please 'Add New'.");
+                alert("Sorry! More than "+ settings.maxLimit +" items can't be added'.");
                 return false;
             }
 
@@ -141,8 +141,8 @@
             var newID         = id;
 
             if (id !== undefined) {
-                    newID = _incrementLastNumber(id, index);
-                    $elem.attr( 'id', newID);
+                newID = _incrementLastNumber(id, index);
+                $elem.attr( 'id', newID);
             }
 
             if (id !== newID) {
@@ -187,6 +187,10 @@
 
                     name = matches[1] + '[' + identifiers.join('][') + ']' + matches[3];
                     $elem.attr('name', name);
+                }else{
+                    if (name !== undefined) {
+                        $elem.attr( 'name', _incrementLastNumber(name, index));
+                    }
                 }
             }
 
@@ -198,7 +202,7 @@
 
             var $template = $(template_clone).clone(false, false);
             //console.log($template);
-
+            //$template.addClass('add-item-button');
             $template.find('input, textarea, select').each(function() {
                 if ($(this).is(':checkbox') || $(this).is(':radio')) {
                     var type         = ($(this).is(':checkbox')) ? 'checkbox' : 'radio';
@@ -216,11 +220,11 @@
                 } else if($(this).is('select')) {
                     $(this).find('option:selected').removeAttr("selected");
                 } else if($(this).is('file')) {
-                        $(this).parents('.fileinput').find('.previewing').attr('src', SITE_CONSTANT['DEFAULT_IMAGE_ADMIN']);
-                        $(this).parents('.fileinput').find('.fileinput-preview img').attr('src', SITE_CONSTANT['DEFAULT_IMAGE_ADMIN']);
-                        $(this).parents('.fileinput').find('.check-file-remove').hide();
-                        $(this).parents('.fileinput').find('.check-file-change').hide();
-                        $(this).parents('.fileinput').find('.check-file-select').show();
+                    $(this).parents('.fileinput').find('.previewing').attr('src', SITE_CONSTANT['DEFAULT_IMAGE_ADMIN']);
+                    $(this).parents('.fileinput').find('.fileinput-preview img').attr('src', SITE_CONSTANT['DEFAULT_IMAGE_ADMIN']);
+                    $(this).parents('.fileinput').find('.check-file-remove').hide();
+                    $(this).parents('.fileinput').find('.check-file-change').hide();
+                    $(this).parents('.fileinput').find('.check-file-select').show();
                 } else if($(this).is('textarea')) {
                     $(this).html("");
                 } else {
@@ -331,6 +335,13 @@
                             //_initializePlugins();
                         });
                     }
+                }else{
+                    $elem.parents('.' + settings.cloneContainer).slideUp(function(){
+                        $(this).remove();
+                        _updateAttributes();
+                        settings.afterRemove.call(this);
+                        //_initializePlugins();
+                    });
                 }
             }else{
                 alert('you must have at least one item.');
@@ -342,15 +353,18 @@
         };
 
 
-        $(document).on('click', '.' + settings.removeButtonClass, function(){
+        $(document).on('click', '.' + settings.removeButtonClass, function(e){
+            e.stopPropagation();
             settings.beforeRemove.call(this);
             _deleteItem($(this));
         });
 
 
         // loop each element
-        this.each(function() {
-            $(this).click(function(){
+        this.each(function(index, item) {
+            $(item).addClass('add-item-button');
+            $(document).on('click', '.add-item-button', function(e){
+                e.stopPropagation();
                 _addItem();
             });
             _parseTemplate();
